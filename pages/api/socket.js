@@ -17,8 +17,8 @@ const SocketHandler = (req, res) => {
       )
       socket.on('join', room => {
         socket.join(room)
-        
         console.log(socket.rooms)
+        socket.to(room).emit('welcome', "Welcome to this Conversation!")
       })
       //socket.emit("some event", "Hallo Welt")
       })

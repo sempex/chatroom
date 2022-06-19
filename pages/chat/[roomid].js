@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import io from 'socket.io-client'
 let socket
 
@@ -9,16 +9,17 @@ export default function Home() {
     const router = useRouter()
     const id = router.query.roomid
     useEffect(() => {
+       async () => {
         const socketInitializer = async () => {
             await fetch('/api/socket')
             socket = io()
-            if (id) socket.emit('join', id)
+            socket.on('welcome', msg => {
+                console.log(msg)
+            })
         }
-        socketInitializer()
-            
-        
-        
-    },[router])
+        if (!socket) socketInitializer()
+        socket.emit('join', id) }
+    }, [router])
 
 
     return (

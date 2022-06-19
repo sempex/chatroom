@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useTypewriter } from "react-simple-typewriter"
 import { useRouter } from "next/router"
-import io from 'socket.io-client'
 let socket
 
 
@@ -16,18 +15,6 @@ export default function Home() {
   const [room, setRoom] = useState('')
 
   const router = useRouter()
-
-  useEffect(() => {
-    const socketInitializer = async () => {
-      await fetch('/api/socket')
-      socket = io()
-      socket.on('some event', () => {
-        console.log("Some event")
-      })
-    }
-      socketInitializer()
-  }, [])
-
 
   const onChangeHandler = (e) => {
     setRoom(e.target.value)
