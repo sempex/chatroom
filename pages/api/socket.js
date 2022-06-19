@@ -11,12 +11,18 @@ const SocketHandler = (req, res) => {
 
 
     io.on('connection', socket => {
-      socket.on('test', (args) => {
-        console.log(args)
+      socket.on('test', msg => {
+        console.log(msg)
+      }
+      )
+      socket.on('join', room => {
+        socket.join(room)
+        
+        console.log(socket.rooms)
+      })
+      //socket.emit("some event", "Hallo Welt")
       })
     }
-    )
-  }
   res.end()
 }
 
