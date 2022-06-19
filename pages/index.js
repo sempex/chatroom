@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useTypewriter } from "react-simple-typewriter"
+import { useRouter } from "next/router"
 import io from 'socket.io-client'
 let socket
 
@@ -14,16 +15,15 @@ export default function Home() {
 
   const [room, setRoom] = useState('')
 
-
+  const router = useRouter()
 
   useEffect(() => {
     const socketInitializer = async () => {
       await fetch('/api/socket')
       socket = io()
-      socket.on('connect', () => {
-        console.log('connected')
-      }
-      )
+      socket.on('some event', () => {
+        console.log("Some event")
+      })
     }
       socketInitializer()
   }, [])
@@ -33,9 +33,10 @@ export default function Home() {
     setRoom(e.target.value)
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-    socket.emit('test', room)
+    router.push(`/chat/${room}`)
+    // socket.emit('join', room)
   }
 
 
