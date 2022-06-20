@@ -9,16 +9,18 @@ export default function Home() {
     const router = useRouter()
     const id = router.query.roomid
     useEffect(() => {
+        let ignore = false
         const socketInitializer = async () => {
             await fetch('/api/socket')
             socket = io()
             socket.on('welcome', msg => {
                 console.log(msg)
+                console.log(ignore)
             })
+            if (!ignore) socket.emit('join', id)
         }
-        if (!socket) socketInitializer()
-        else socket.emit('join', id)
-        return () => { }
+        socketInitializer()
+        return () => { ignore = true }
     }, [router])
 
 
