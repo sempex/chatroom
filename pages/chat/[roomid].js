@@ -9,6 +9,7 @@ export default function Home() {
 
     const [message, setMessage] = useState('')
     const [incomingMessages, setIncomingMessages] = useState([])
+    const [mySentMessages, setmySentMessages] = useState([])
     const refLatestChat = useRef(null)
     const router = useRouter()
     const id = router.query.roomid
@@ -40,6 +41,7 @@ export default function Home() {
     const sendMessage = (e) => {
         e.preventDefault()
         socket.emit('message', message)
+        setmySentMessages(current => [...current, message])
         setMessage('')
     }
     console.log(incomingMessages)
@@ -50,6 +52,11 @@ export default function Home() {
             <div className="overflow-y-auto h-full">
                 {
                     incomingMessages.map((message, i) => {
+                        return <Message messagetext={message} key={i} />
+                    })
+                }
+                {
+                    mySentMessages.map((message, i) => {
                         return <Message messagetext={message} key={i} />
                     })
                 }
