@@ -43,7 +43,7 @@ export default function Home() {
     return (
         <div className="relative h-screen flex flex-col">
             <img src="/assets/background.svg" alt="Background Image" className="absolute inset-0 h-full w-full z-[-1]" />
-            <div>
+            <div className="overflow-y-auto">
                 {
                     incomingMessages.map((message, i) => {
                         return <Message messagetext={message} key={i} />
