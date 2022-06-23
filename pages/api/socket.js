@@ -19,6 +19,10 @@ const SocketHandler = (req, res) => {
         socket.join(room)
         console.log(socket.rooms)
         socket.to(room).emit('welcome', "Welcome to this Conversation!")
+      }
+      )
+      socket.on('message', message => {
+        socket.to([...socket.rooms][1]).emit('serverMessage', message)
       })
       //socket.emit("some event", "Hallo Welt")
       })

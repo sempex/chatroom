@@ -1,11 +1,14 @@
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import io from 'socket.io-client'
+import Message from "../../components/Message"
 let socket
 
 
 export default function Home() {
 
+    const [message, setMessage] = useState('')
+    const [incomingMessages, setIncomingMessages] = useState([])
     const router = useRouter()
     const id = router.query.roomid
     useEffect(() => {
@@ -15,7 +18,9 @@ export default function Home() {
             socket = io()
             socket.on('welcome', msg => {
                 console.log(msg)
-                console.log(ignore)
+            })
+            socket.on('serverMessage', message => {
+                setIncomingMessages(current => [...current, message])
             })
             if (!ignore) socket.emit('join', id)
         }
@@ -24,9 +29,33 @@ export default function Home() {
     }, [router])
 
 
+    const onChangeHandler = (e) => {
+        setMessage(e.target.value)
+    }
+
+    const sendMessage = (e) => {
+        e.preventDefault()
+        socket.emit('message', message)
+        setMessage('')
+    }
+    console.log(incomingMessages)
+
     return (
-        <div>
-            <p>{id}</p>
+        <div className="relative h-screen flex flex-col">
+            <img src="/assets/background.svg" alt="Background Image" className="absolute inset-0 h-full w-full z-[-1]" />
+            <div>
+                {
+                    incomingMessages.map((message, i) => {
+                        return <Message messagetext={message} key={i} />
+                    })
+                }
+            </div>
+            <form className="flex justify-center items-end h-full" onSubmit={sendMessage}>
+                <div className="space-x-6 mb-10">
+                    <input className="px-7 py-2 bg-slate-200 rounded-xl shadow-md shadow-slate-500/50" onChange={onChangeHandler} value={message} />
+                    <input type={"submit"} value="Send" className="py-2 px-7 bg-teal-300 rounded-xl font-extrabold shadow-md shadow-teal-300/60" />
+                </div>
+            </form>
         </div>
     )
 }
