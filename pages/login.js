@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form"
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
+import axios from "axios"
 
 const scheme = yup.object({
     email: yup.string().email(),
@@ -14,17 +15,22 @@ export default function Login() {
         resolver: yupResolver(scheme)
     })
 
-    const onSubmit = data => {
-        console.log(data.username)
+    const onSubmit = async data => {
+        const res = await axios.post('/api/users', {
+            username: data.username,
+            email: data.email,
+            password: data.password
+        })
     }
     return (
-        <div>
+        <div className="flex items-center justify-center h-screen gap-20">
             <img src="/assets/background.svg" alt="Background Image" className="absolute inset-0 h-screen w-screen z-[-1]" />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <h1 className="text-5xl mb-5 font-extrabold">Login</h1>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                 <input placeholder="Username" {...register("username", { required: true })} />
                 <input placeholder="Email" {...register("email", { required: true, pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g })} />
                 <input placeholder="Password" type={"password"} {...register("password", { required: true })} />
-                <input type={"submit"} />
+                <button type={"submit"} className="shadow-teal-300/60 bg-teal-300">Login</button>
             </form>
         </div>
     )

@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer base {
+    input {
+        @apply p-2 px-9 bg-slate-200 rounded-xl shadow-md shadow-slate-500/50
+    }
+    button {
+        @apply py-4 px-7 rounded-xl font-extrabold shadow-md
+    }
+}
