@@ -2,8 +2,8 @@
   "name": "chatroom",
   "version": "0.1.0",
   "engines": {
-    "node": "16",
-    "npm": "8"
+    "node": "16.15.0",
+    "npm": "8.12.2"
   },
   "private": true,
   "scripts": {
