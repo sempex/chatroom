@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useTypewriter } from "react-simple-typewriter"
 import { useRouter } from "next/router"
-let socket
+import axios from "axios"
 
 
 export default function Home() {
@@ -22,8 +22,13 @@ export default function Home() {
 
   const onSubmit = async (e) => {
     e.preventDefault()
-    router.push(`/chat/${room}`)
-    // socket.emit('join', room)
+    const res = await axios.post('/api/users', {
+      username: "krebsnoe",
+      email: "krebs.noe@bluewin.ch",
+      password: "sml12345"
+    })
+    if (res.status === 200) router.push(`/chat/${room}`)
+    else console.log(res)
   }
 
 
