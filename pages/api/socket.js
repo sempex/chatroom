@@ -1,4 +1,4 @@
-import { Server } from 'Socket.IO'
+import { Server } from 'socket.io'
 //req is filled with the Clients information (Automatically by NextJs)
 //res can be altered and gets send back to the Client
 const SocketHandler = (req, res) => { 
