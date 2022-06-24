@@ -2,7 +2,8 @@
   "name": "chatroom",
   "version": "0.1.0",
   "engines": {
-    "node": "16"
+    "node": "16",
+    "npm": "8"
   },
   "private": true,
   "scripts": {
@@ -21,7 +22,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.33.0",
     "react-simple-typewriter": "^3.0.1",
-    "socket.io": "4.5.1",
+    "socket.io": "^4.5.1",
     "socket.io-client": "^4.5.1",
     "yup": "^0.32.11"
   },
