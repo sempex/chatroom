@@ -37,6 +37,7 @@ export default function Login() {
                 <button type={"submit"} className="shadow-teal-300/60 bg-teal-300">Login</button>
                 <button className="bg-blue-500 text-white shadow-blue-500/60" onClick={() => signIn()}>Sign in with Google</button>
             </form>
+            <p>Loged In as {session?.user.name}</p>
         </div>
     )
 }
