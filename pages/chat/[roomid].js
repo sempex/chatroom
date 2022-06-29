@@ -49,7 +49,7 @@ export default function Home() {
         e.preventDefault()
         socket.emit('message', message)
         setmySentMessages(current => [...current, message])
-        const res = await axios.post('/api/chats', {
+        const res = await axios.post('/api/message/message', {
             username: session?.user.name,
             message: message,
             room: id
