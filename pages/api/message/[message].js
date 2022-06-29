@@ -1,8 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-
 const prisma = new PrismaClient()
-
-
 export default async function handler(req, res) {
     if (req.method === 'GET') {
         return await getChat(req, res)
@@ -12,7 +9,6 @@ export default async function handler(req, res) {
     }
     else return res.status(405).json({ message: 'Method not allowed', success: false })
 }
-
 async function getChat(req, res) {
     const roomID = req.query.message
     try {
@@ -28,7 +24,6 @@ async function getChat(req, res) {
         res.status(500).json({error: "Error creating question", success: false})
     }
 }
-
 async function postChat(req, res) {
     const body = req.body
     try {

@@ -2,13 +2,9 @@ import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import Login from "../components/Login"
 import Landing from "../components/Landing"
-
-
 export default function Home() {
   const { data: session, status } = useSession()
   const [ login, setLogin ] = useState(true)
-
-
   useEffect(() => {
     const checkAuthenticated = async () => {
       if (status === "authenticated") {
@@ -17,10 +13,6 @@ export default function Home() {
     }
     checkAuthenticated()
   })
-  
-
-
-
   return (
 
     <div>

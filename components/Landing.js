@@ -1,16 +1,11 @@
 import { useState } from "react"
 import { useTypewriter } from "react-simple-typewriter"
 import { useRouter } from "next/router"
-import Link from 'next/link'
-
 export default function Landing() {
   const { text, count } = useTypewriter({
     words: ['Connect with new people!', 'Meet friends!', 'Just chat!', 'Get work done!'],
     loop: false
   })
-
- 
-
   const [room, setRoom] = useState('')
 
   const router = useRouter()
@@ -23,10 +18,6 @@ export default function Landing() {
     e.preventDefault()
     router.push(`/chat/${room}`)
   }
-  
-
-
-
   return (
     <div className="flex flex-col justify-center items-center h-screen relative">
       <img src="/assets/background.svg" alt="Background Image" className="absolute inset-0 h-screen w-screen z-[-1]" />

@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
-
 export default async function handler(req, res) {
     if (req.method === 'GET') {
         return await getUser(req, res)
@@ -10,7 +9,6 @@ export default async function handler(req, res) {
     }
     else return res.status(405).json({ message: 'Method not allowed', success: false })
 }
-
 async function getUser(req, res) {
     try {
         const users = await prisma.user.findMany()
@@ -21,7 +19,6 @@ async function getUser(req, res) {
         res.status(500).json({error: "Error creating question", success: false})
     }
 }
-
 async function postUser(req, res) {
     const body = req.body
     try {

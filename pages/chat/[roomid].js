@@ -4,10 +4,7 @@ import { useSession } from "next-auth/react"
 import io from 'socket.io-client'
 import Message from "../../components/Message"
 import axios from "axios"
-
 let socket
-
-
 export default function Home() {
     const { data: session, status } = useSession()
     const [message, setMessage] = useState('')
@@ -17,7 +14,6 @@ export default function Home() {
     const router = useRouter()
     const id = router.query.roomid
     const [roomMessages, setRoomMessages] = useState([])
-
     useEffect(() => {
         let ignore = false
         const socketInitializer = async () => {
@@ -34,17 +30,13 @@ export default function Home() {
                 const {data} = await axios.get(`/api/message/${id}`)
                 setRoomMessages(data)
             }
-            
         }
         socketInitializer()
         return () => { ignore = true }
     }, [router])
-
-
     const onChangeHandler = (e) => {
         setMessage(e.target.value)
     }
-
     const sendMessage = async (e) => {
         e.preventDefault()
         socket.emit('message', message)
@@ -56,7 +48,6 @@ export default function Home() {
         })
         setMessage('')
     }
-
     console.log(roomMessages)
     return (
         <div className="relative h-screen flex flex-col">
@@ -89,4 +80,3 @@ export default function Home() {
         </div>
     )
 }
-
