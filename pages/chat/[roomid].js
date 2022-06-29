@@ -1,12 +1,14 @@
 import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
+import { useSession } from "next-auth/react"
 import io from 'socket.io-client'
 import Message from "../../components/Message"
+import axios from "axios"
 let socket
 
 
 export default function Home() {
-
+    const { data: session, status } = useSession()
     const [message, setMessage] = useState('')
     const [incomingMessages, setIncomingMessages] = useState([])
     const [mySentMessages, setmySentMessages] = useState([])
@@ -38,10 +40,16 @@ export default function Home() {
         setMessage(e.target.value)
     }
 
-    const sendMessage = (e) => {
+    const sendMessage = async (e) => {
         e.preventDefault()
         socket.emit('message', message)
         setmySentMessages(current => [...current, message])
+        console.log(session?.user.name)
+        const res = await axios.post('/api/chats', {
+            username: session?.user.name,
+            message: message,
+            room: id
+        })
         setMessage('')
     }
     console.log(incomingMessages)

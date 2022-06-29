@@ -3,18 +3,18 @@ const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {
-        return await getUser(req, res)
+        return await getChat(req, res)
     }
     else if (req.method === 'POST') {
-        return await postUser(req, res)
+        return await postChat(req, res)
     }
     else return res.status(405).json({ message: 'Method not allowed', success: false })
 }
 
-async function getUser(req, res) {
+async function getChat(req, res) {
     try {
-        const users = await prisma.user.findMany()
-        return res.status(200).json(users, {success: true})
+        const chats = await prisma.chats.findMany()
+        return res.status(200).json(chats, {success: true})
     }
     catch (error) {
         console.error("Request error", error)
@@ -22,14 +22,14 @@ async function getUser(req, res) {
     }
 }
 
-async function postUser(req, res) {
+async function postChat(req, res) {
     const body = req.body
     try {
-        const newEntry = await prisma.user.create({
+        const newEntry = await prisma.chats.create({
             data: {
                 username: body.username,
-                email: body.email,
-                password: body.password
+                message: body.message,
+                room: body.room
             }
         })
         return res.status(200).json(newEntry, {success: true,})
