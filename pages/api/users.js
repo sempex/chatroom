@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import { data } from 'autoprefixer'
 
 const prisma = new PrismaClient()
 
@@ -26,7 +25,6 @@ async function getUser(req, res) {
 }
 
 async function postUser(req, res) {
-    const body = req.body
     try {
         const newEntry = await prisma.user.create({
             data: {
