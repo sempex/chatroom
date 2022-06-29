@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client'
+
 const prisma = new PrismaClient()
+
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {
@@ -12,8 +14,13 @@ export default async function handler(req, res) {
 }
 
 async function getChat(req, res) {
+    const roomID = req.query.message
     try {
-        const chats = await prisma.chats.findMany()
+        const chats = await prisma.chats.findMany({where : {
+            room : {
+                equals: roomID
+            }
+        }})
         return res.status(200).json(chats, {success: true})
     }
     catch (error) {

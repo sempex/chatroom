@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react"
 import io from 'socket.io-client'
 import Message from "../../components/Message"
 import axios from "axios"
+
 let socket
 
 
@@ -15,21 +16,25 @@ export default function Home() {
     const refLatestChat = useRef(null)
     const router = useRouter()
     const id = router.query.roomid
+    const [roomMessages, setRoomMessages] = useState([])
+
     useEffect(() => {
         let ignore = false
         const socketInitializer = async () => {
             await fetch('/api/socket')
             socket = io()
-            socket.on('welcome', msg => {
-                console.log(msg)
-            })
             socket.on('serverMessage', message => {
                 setIncomingMessages(current => [...current, message])
                 refLatestChat.current.scrollIntoView({
                     behavior: "smooth"
                 })
             })
-            if (!ignore) socket.emit('join', id)
+            if (!ignore) {
+                socket.emit('join', id)
+                const {data} = await axios.get(`/api/message/${id}`)
+                setRoomMessages(data)
+            }
+            
         }
         socketInitializer()
         return () => { ignore = true }
@@ -44,7 +49,6 @@ export default function Home() {
         e.preventDefault()
         socket.emit('message', message)
         setmySentMessages(current => [...current, message])
-        console.log(session?.user.name)
         const res = await axios.post('/api/chats', {
             username: session?.user.name,
             message: message,
@@ -52,12 +56,17 @@ export default function Home() {
         })
         setMessage('')
     }
-    console.log(incomingMessages)
 
+    console.log(roomMessages)
     return (
         <div className="relative h-screen flex flex-col">
             <img src="/assets/background.svg" alt="Background Image" className="absolute inset-0 h-full w-full z-[-1]" />
             <div className="overflow-y-auto h-full">
+                {
+                    roomMessages.map((message, i) => {
+                        return <Message messagetext={message.message} key={i} />
+                    })
+                } 
                 {
                     incomingMessages.map((message, i) => {
                         return <Message messagetext={message} key={i} />
