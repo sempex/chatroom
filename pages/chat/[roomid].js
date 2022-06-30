@@ -8,8 +8,8 @@ let socket
 export default function Home() {
     const { data: session, status } = useSession()
     const [message, setMessage] = useState('')
-    const [incomingMessages, setIncomingMessages] = useState([])
-    const [mySentMessages, setmySentMessages] = useState([])
+    // const [incomingMessages, setIncomingMessages] = useState([])
+    // const [mySentMessages, setmySentMessages] = useState([])
     const refLatestChat = useRef(null)
     const router = useRouter()
     const id = router.query.roomid
@@ -20,7 +20,11 @@ export default function Home() {
             await fetch('/api/socket')
             socket = io()
             socket.on('serverMessage', message => {
-                setIncomingMessages(current => [...current, message])
+                setRoomMessages(current => [...current, {
+                    username: session?.user.name,
+                    message: message,
+                    room: id
+                }])
                 refLatestChat.current.scrollIntoView({
                     behavior: "smooth"
                 })
@@ -40,11 +44,15 @@ export default function Home() {
     const sendMessage = async (e) => {
         e.preventDefault()
         socket.emit('message', message)
-        setmySentMessages(current => [...current, {
+        setRoomMessages(current => [...current, {
             username: session?.user.name,
             message: message,
             room: id
         }])
+        refLatestChat.current.scrollIntoView({
+            behavior: "smooth"
+        })
+        
         const res = await axios.post('/api/message/message', {
             username: session?.user.name,
             message: message,
@@ -62,16 +70,6 @@ export default function Home() {
             <div className="overflow-y-auto h-full">
                 {
                     roomMessages.map((message, i) => {
-                        return <Message messagetext={message.message} messageUsername={message.username} key={i} />
-                    })
-                }
-                {
-                    incomingMessages.map((message, i) => {
-                        return <Message messagetext={message.message} messageUsername={message.username} key={i} />
-                    })
-                }
-                {
-                    mySentMessages.map((message, i) => {
                         return <Message messagetext={message.message} messageUsername={message.username} key={i} />
                     })
                 }
