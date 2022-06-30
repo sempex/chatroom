@@ -27,7 +27,6 @@ export default function Home() {
             socket = io()
             socket.on('serverMessage', message => {
                 setRoomMessages(current => [...current, {
-                    username: session?.user.name,
                     message: message,
                     room: id
                 }])
