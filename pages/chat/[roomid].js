@@ -14,6 +14,12 @@ export default function Home() {
     const router = useRouter()
     const id = router.query.roomid
     const [roomMessages, setRoomMessages] = useState([])
+    useEffect(() =>{
+        refLatestChat.current.scrollIntoView({
+            behavior: "smooth"
+        })
+    }, [roomMessages])
+
     useEffect(() => {
         let ignore = false
         const socketInitializer = async () => {
@@ -25,9 +31,6 @@ export default function Home() {
                     message: message,
                     room: id
                 }])
-                refLatestChat.current.scrollIntoView({
-                    behavior: "smooth"
-                })
             })
             if (!ignore) {
                 socket.emit('join', id)
@@ -49,10 +52,7 @@ export default function Home() {
             message: message,
             room: id
         }])
-        refLatestChat.current.scrollIntoView({
-            behavior: "smooth"
-        })
-        
+
         const res = await axios.post('/api/message/message', {
             username: session?.user.name,
             message: message,
