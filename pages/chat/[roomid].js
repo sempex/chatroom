@@ -27,7 +27,7 @@ export default function Home() {
             })
             if (!ignore) {
                 socket.emit('join', id)
-                const {data} = await axios.get(`/api/message/${id}`)
+                const { data } = await axios.get(`/api/message/${id}`)
                 setRoomMessages(data)
             }
         }
@@ -40,7 +40,11 @@ export default function Home() {
     const sendMessage = async (e) => {
         e.preventDefault()
         socket.emit('message', message)
-        setmySentMessages(current => [...current, message])
+        setmySentMessages(current => [...current, {
+            username: session?.user.name,
+            message: message,
+            room: id
+        }])
         const res = await axios.post('/api/message/message', {
             username: session?.user.name,
             message: message,
@@ -48,24 +52,27 @@ export default function Home() {
         })
         setMessage('')
     }
-    console.log(roomMessages)
+
+
+
+
     return (
         <div className="relative h-screen flex flex-col">
             <img src="/assets/background.svg" alt="Background Image" className="absolute inset-0 h-full w-full z-[-1]" />
             <div className="overflow-y-auto h-full">
                 {
                     roomMessages.map((message, i) => {
-                        return <Message messagetext={message.message} key={i} />
+                        return <Message messagetext={message.message} messageUsername={message.username} key={i} />
                     })
-                } 
+                }
                 {
                     incomingMessages.map((message, i) => {
-                        return <Message messagetext={message} key={i} />
+                        return <Message messagetext={message.message} messageUsername={message.username} key={i} />
                     })
                 }
                 {
                     mySentMessages.map((message, i) => {
-                        return <Message messagetext={message} key={i} />
+                        return <Message messagetext={message.message} messageUsername={message.username} key={i} />
                     })
                 }
                 <div ref={refLatestChat} className="mb-20"></div>
