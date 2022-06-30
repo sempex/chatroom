@@ -14,7 +14,7 @@ export default function Home() {
     const router = useRouter()
     const id = router.query.roomid
     const [roomMessages, setRoomMessages] = useState([])
-    useEffect(() =>{
+    useEffect(() => {
         refLatestChat.current.scrollIntoView({
             behavior: "smooth"
         })
@@ -27,8 +27,9 @@ export default function Home() {
             socket = io()
             socket.on('serverMessage', message => {
                 setRoomMessages(current => [...current, {
-                    message: message,
-                    room: id
+                    username: message.username,
+                    message: message.message,
+                    room: message.id
                 }])
             })
             if (!ignore) {
@@ -45,7 +46,11 @@ export default function Home() {
     }
     const sendMessage = async (e) => {
         e.preventDefault()
-        socket.emit('message', message)
+        socket.emit('message', {
+            username: session?.user.name,
+            message: message,
+            room: id
+        })
         setRoomMessages(current => [...current, {
             username: session?.user.name,
             message: message,
