@@ -60,10 +60,6 @@ export default function Home() {
         })
         setMessage('')
     }
-
-
-
-
     return (
         <div className="relative h-screen flex flex-col">
             <img src="/assets/background.svg" alt="Background Image" className="absolute inset-0 h-full w-full z-[-1]" />
