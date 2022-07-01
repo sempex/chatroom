@@ -24,12 +24,7 @@ export default function Home() {
             await fetch('/api/socket')
             socket = io()
             socket.on('serverMessage', message => {
-                setRoomMessages(current => [...current, {
-                    username: message.username,
-                    message: message.message,
-                    room: message.id,
-                    image: message.image
-                }])
+                setRoomMessages(current => [...current, message])
             })
             if (!ignore) {
                 socket.emit('join', id)
