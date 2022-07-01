@@ -8,8 +8,6 @@ let socket
 export default function Home() {
     const { data: session, status } = useSession()
     const [message, setMessage] = useState('')
-    // const [incomingMessages, setIncomingMessages] = useState([])
-    // const [mySentMessages, setmySentMessages] = useState([])
     const refLatestChat = useRef(null)
     const router = useRouter()
     const id = router.query.roomid
@@ -50,12 +48,14 @@ export default function Home() {
         socket.emit('message', {
             username: session?.user.name,
             message: message,
-            room: id
+            room: id,
+            image: session?.user.image
         })
         setRoomMessages(current => [...current, {
             username: session?.user.name,
             message: message,
-            room: id
+            room: id,
+            image: session?.user.image
         }])
 
         const res = await axios.post('/api/message/message', {
