@@ -29,7 +29,8 @@ export default function Home() {
                 setRoomMessages(current => [...current, {
                     username: message.username,
                     message: message.message,
-                    room: message.id
+                    room: message.id,
+                    image: message.image
                 }])
             })
             if (!ignore) {
