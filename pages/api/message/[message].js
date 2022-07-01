@@ -31,7 +31,8 @@ async function postChat(req, res) {
             data: {
                 username: body.username,
                 message: body.message,
-                room: body.room
+                room: body.room,
+                image: body.image
             }
         })
         return res.status(200).json(newEntry, {success: true,})

@@ -60,7 +60,8 @@ export default function Home() {
         const res = await axios.post('/api/message/message', {
             username: session?.user.name,
             message: message,
-            room: id
+            room: id,
+            image: session?.user.image
         })
         setMessage('')
     }
@@ -70,7 +71,7 @@ export default function Home() {
             <div className="overflow-y-auto h-full">
                 {
                     roomMessages.map((message, i) => {
-                        return <Message messagetext={message.message} messageUsername={message.username} key={i} />
+                        return <Message messagetext={message.message} messageUsername={message.username} messageProfilepicture={message.image} key={i} />
                     })
                 }
                 <div ref={refLatestChat} className="mb-20"></div>

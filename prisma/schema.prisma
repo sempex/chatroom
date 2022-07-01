@@ -58,4 +58,5 @@ model Chats {
   username  String?
   message String?
   room String?
+  image String?
 }
