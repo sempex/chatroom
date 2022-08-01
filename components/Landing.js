@@ -1,12 +1,15 @@
 import { useState } from "react"
 import { useTypewriter } from "react-simple-typewriter"
 import { useRouter } from "next/router"
+import axios from "axios"
 export default function Landing() {
   const { text, count } = useTypewriter({
     words: ['Connect with new people!', 'Meet friends!', 'Just chat!', 'Get work done!'],
     loop: false
   })
   const [room, setRoom] = useState('')
+  const [search, setSearch] = useState('')
+  const [hits, setHits] = useState('')
 
   const router = useRouter()
 
@@ -14,10 +17,19 @@ export default function Landing() {
     setRoom(e.target.value)
   }
 
+  const searchHandler = async (e) => {
+    setSearch(e.target.value)
+    console.log(search)
+    const { data } = await axios.get(`/api/search/${search}`)
+    console.log(data)
+  }
+
+
   const onSubmit = async (e) => {
     e.preventDefault()
     router.push(`/chat/${room}`)
   }
+
   return (
     <div className="flex flex-col justify-center items-center h-screen relative">
       <img src="/assets/background.svg" alt="Background Image" className="absolute inset-0 h-screen w-screen z-[-1]" />
@@ -31,6 +43,7 @@ export default function Landing() {
           <button type="submit" className="bg-teal-300 shadow-teal-300/60">Continue</button>
         </div>
       </form>
+      <input placeholder="Search friends..." className="mt-4" onChange={searchHandler} pattern="^\S.*$"></input>
     </div>
   )
 }
