@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useTypewriter } from "react-simple-typewriter"
 import { useRouter } from "next/router"
+import { useDebouncedCallback } from 'use-debounce'
 import axios from "axios"
 export default function Landing() {
   const { text, count } = useTypewriter({
@@ -9,7 +10,7 @@ export default function Landing() {
   })
   const [room, setRoom] = useState('')
   const [search, setSearch] = useState('')
-  const [hits, setHits] = useState('')
+  const [hits, setHits] = useState([])
 
   const router = useRouter()
 
@@ -17,12 +18,14 @@ export default function Landing() {
     setRoom(e.target.value)
   }
 
-  const searchHandler = async (e) => {
-    setSearch(e.target.value)
-    console.log(search)
-    const { data } = await axios.get(`/api/search/${search}`)
-    console.log(data)
-  }
+  const debounced = useDebouncedCallback(
+    async (value) => {
+      const { data } = await axios.get(`/api/search?s=${value}`)
+      setHits(data)
+    },
+    200
+  );
+
 
 
   const onSubmit = async (e) => {
@@ -43,7 +46,10 @@ export default function Landing() {
           <button type="submit" className="bg-teal-300 shadow-teal-300/60">Continue</button>
         </div>
       </form>
-      <input placeholder="Search friends..." className="mt-4" onChange={searchHandler} pattern="^\S.*$"></input>
+      <input placeholder="Search friends..." className="mt-4" onChange={(e) => debounced(e.target.value)} pattern="^\S.*$"></input>
+      {hits.map((hit, i) => {
+        return <h1 key={i}>{hit.name}</h1>
+      })}
     </div>
   )
 }

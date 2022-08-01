@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     else return res.status(405).json({ message: 'Method not allowed', success: false })
 }
 async function getSearch(req, res) {
-    const search = req.query.search
+    const search = req.query.s
     try {
         const result = await prisma.User.findMany({where : {
             name : {
