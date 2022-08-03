@@ -34,22 +34,28 @@ export default function Landing() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen relative">
+    <div className="h-screen">
       <img src="/assets/background.svg" alt="Background Image" className="absolute inset-0 h-screen w-screen z-[-1]" />
-      <h1 className="font-bold text-4xl mb-5">Welcome to <span className="font-extrabold text-teal-300">SimpleChat!</span></h1>
-      <p className="mb-16 font-bold text-xl">With SimpleChat you can <span className="font-extrabold text-gray-600 text-2xl">{text}</span></p>
-      <form onSubmit={onSubmit} className="">
-        <div className="">
-          <input type="text" placeholder="Enter Room ID" value={room} onChange={onChangeHandler} className="p-6 bg-slate-200 rounded-xl text-center shadow-md shadow-slate-500/50"></input>
-        </div>
-        <div className="text-center mt-2">
-          <button type="submit" className="bg-teal-300 shadow-teal-300/60">Continue</button>
-        </div>
-      </form>
-      <input placeholder="Search friends..." className="mt-4" onChange={(e) => debounced(e.target.value)} pattern="^\S.*$"></input>
-      {hits.map((hit, i) => {
-        return <h1 key={i}>{hit.name}</h1>
-      })}
+      <div className="flex justify-end">
+      <div className="flex flex-col items-center">
+      <input placeholder="Search friends..." className="mt-6 mr-4" onChange={(e) => debounced(e.target.value)}></input>
+        {hits.map((hit, i) => {
+          return <h1 key={i}>{hit.name}</h1>
+        })}
+      </div>
+      </div>
+      <div className="h-screen w-screen fixed flex flex-col items-center justify-center">
+        <h1 className="font-bold text-4xl mb-5 text-center mt-2">Welcome to <span className="font-extrabold text-teal-300">SimpleChat!</span></h1>
+        <p className="mb-16 font-bold text-xl text-center mt-2">With SimpleChat you can <span className="font-extrabold text-gray-600 text-2xl">{text}</span></p>
+        <form onSubmit={onSubmit} className="">
+          <div className="text-center mt-2">
+            <input type="text" placeholder="Enter Room ID" value={room} onChange={onChangeHandler} className="p-6 bg-slate-200 rounded-xl text-center shadow-md shadow-slate-500/50"></input>
+          </div>
+          <div className="text-center mt-2">
+            <button type="submit" className="bg-teal-300 shadow-teal-300/60">Continue</button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
