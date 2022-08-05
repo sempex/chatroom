@@ -41,7 +41,7 @@ export default function Landing() {
         <div className="flex flex-col items-center">
           <input placeholder="Search friends..." className="mt-6 mr-4" onChange={(e) => debounced(e.target.value)}></input>
           {hits.map((hit, i) => {
-            return <SearchResults username={hit.name}/>
+            return <SearchResults key={i} username={hit.name}/>
           })}
         </div>
       </div>
