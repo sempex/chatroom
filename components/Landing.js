@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useTypewriter } from "react-simple-typewriter"
 import { useRouter } from "next/router"
 import { useDebouncedCallback } from 'use-debounce'
+import SearchResults from "./SearchResults"
 import axios from "axios"
 export default function Landing() {
   const { text, count } = useTypewriter({
@@ -40,7 +41,7 @@ export default function Landing() {
         <div className="flex flex-col items-center">
           <input placeholder="Search friends..." className="mt-6 mr-4" onChange={(e) => debounced(e.target.value)}></input>
           {hits.map((hit, i) => {
-            return <h1 key={i}>{hit.name}</h1>
+            return <SearchResults username={hit.name}/>
           })}
         </div>
       </div>
